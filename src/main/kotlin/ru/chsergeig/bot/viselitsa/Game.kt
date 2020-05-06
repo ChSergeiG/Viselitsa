@@ -14,7 +14,7 @@ class Game(word: String) {
     private var leftTurns = -1
     private var status: String? = null
     var isFinished = false
-    private var word: String? = word.toUpperCase()
+    var word: String? = word.toUpperCase()
 
     init {
         this.leftTurns = 18
@@ -130,6 +130,7 @@ ${getMaskedWord()}
                     event.reply("""
 Есть такая буква ($refined)
 ${getMaskedWord()}
+Еще не использованы ${remainingChars.stream().map { e: String -> e[0].toString() }.collect(Collectors.joining(" "))}
 """
                     )
                     return

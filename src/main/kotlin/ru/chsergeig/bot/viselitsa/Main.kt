@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Activity
 import ru.chsergeig.bot.viselitsa.commands.AbortGame
 import ru.chsergeig.bot.viselitsa.commands.GetStatus
+import ru.chsergeig.bot.viselitsa.commands.Goos
 import ru.chsergeig.bot.viselitsa.commands.StartGame
 import ru.chsergeig.bot.viselitsa.commands.SuggestChar
 import java.awt.Color
@@ -24,12 +25,13 @@ fun main(args: Array<String>) {
     client.setActivity(Activity.watching("на твой член и ржет"))
     client.setOwnerId(ownerId)
     client.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26")
-    client.setPrefix("!!")
+    client.setPrefix("!")
     client.addCommands(
             StartGame(),
             GetStatus(),
             SuggestChar(),
             AbortGame(),
+            Goos(),
             AboutCommand(
                     Color.GREEN,
                     "можете звать меня просто Виселичка",
