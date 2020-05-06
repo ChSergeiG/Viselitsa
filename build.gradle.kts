@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "ru.chsergeig.bot.viselitsa"
-version = "1.0.1"
+version = "1.0.2"
 
 
 dependencies {
@@ -18,6 +18,8 @@ dependencies {
     implementation(group = "com.jagrosh", name = "jda-utilities", version = "3.0.3")
     implementation(group = "com.mashape.unirest", name = "unirest-java", version = "1.4.9")
     implementation(group = "org.apache.httpcomponents", name = "httpclient", version = "4.1.1")
+    implementation(group = "commons-lang", name = "commons-lang", version = "2.6")
+    implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.11.0")
     implementation(kotlin("stdlib-jdk8"))
 }
 

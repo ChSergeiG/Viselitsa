@@ -4,13 +4,13 @@ import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 import net.dv8tion.jda.api.Permission
 import ru.chsergeig.bot.viselitsa.Game
-import ru.chsergeig.bot.viselitsa.Utils.Companion.checkSingleArgAndGet
+import ru.chsergeig.bot.viselitsa.RandomWordProvider
 
-class StartGame : Command() {
+class RandomWord : Command() {
 
     init {
-        name = "start"
-        help = "Начать игру"
+        name = "random"
+        help = "использовать случайное слово"
         botPermissions = arrayOf(Permission.MESSAGE_EMBED_LINKS)
         guildOnly = false
     }
@@ -20,16 +20,9 @@ class StartGame : Command() {
             event!!.replyError("Куда прёшь? Еще не окончена предыдущая игра")
             return
         }
-        val word = checkSingleArgAndGet(
-                event!!,
-                "Тупой, да? Нужно загадать ровно одно слово: !!start СЛОВО",
-                "Слово короче твоего члена. ЕГО НЕТ, БЛЯДЬ"
-        )
+        val word = RandomWordProvider().getWord()
         Game.currentGame = Game(word)
-        event.reply("Слово ${Game.currentGame!!.word} принято")
-
-
-
+        event!!.reply("Слово ${Game.currentGame!!.word} принято")
 
     }
 

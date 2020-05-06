@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.Activity
 import ru.chsergeig.bot.viselitsa.commands.AbortGame
 import ru.chsergeig.bot.viselitsa.commands.GetStatus
 import ru.chsergeig.bot.viselitsa.commands.Goos
+import ru.chsergeig.bot.viselitsa.commands.RandomWord
 import ru.chsergeig.bot.viselitsa.commands.StartGame
 import ru.chsergeig.bot.viselitsa.commands.SuggestChar
 import java.awt.Color
@@ -22,7 +23,7 @@ fun main(args: Array<String>) {
     val ownerId: String = Utils.getValueFromCliArg(args, "ownerId=", "Owner ID")
     val client = CommandClientBuilder()
     client.setStatus(OnlineStatus.ONLINE)
-    client.setActivity(Activity.watching("на твой член и ржет"))
+    client.setActivity(Activity.listening("дичь"))
     client.setOwnerId(ownerId)
     client.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26")
     client.setPrefix("!")
@@ -30,6 +31,7 @@ fun main(args: Array<String>) {
             StartGame(),
             GetStatus(),
             SuggestChar(),
+            RandomWord(),
             AbortGame(),
             Goos(),
             AboutCommand(

@@ -2,6 +2,7 @@ package ru.chsergeig.bot.viselitsa
 
 import com.jagrosh.jdautilities.command.CommandEvent
 import java.util.LinkedList
+import java.util.Optional
 import java.util.stream.Collectors
 
 class Game(word: String) {
@@ -10,7 +11,7 @@ class Game(word: String) {
         var currentGame: Game? = null
     }
 
-    private val remainingChars: MutableList<String> = ArrayList()
+    private val dictionary: MutableMap<String, Boolean> = LinkedHashMap()
     private var leftTurns = -1
     private var status: String? = null
     var isFinished = false
@@ -32,13 +33,14 @@ class Game(word: String) {
 
     fun suggestChar(event: CommandEvent) {
         val firstChar = event.args.split("\\s+".toRegex()).toTypedArray()[0][0].toString()
-        val founded = remainingChars.stream().filter { item: String -> item.contains(firstChar) }.findFirst()
-        if (founded.isPresent) {
-            val refined = founded.get()[0].toString()
+        val foundedInDictionary = findOptEntryInDict(firstChar)
+        if (foundedInDictionary.isPresent && !foundedInDictionary.get().value) {
+            val keyValue = foundedInDictionary.get().key
+            val refined = keyValue[0].toString()
+            dictionary[keyValue] = true
             if (word!!.contains(refined)) {
-                checkWin(event, founded.get(), refined)
+                checkWin(event, keyValue, refined)
             } else {
-                remainingChars.remove(founded.get())
                 leftTurns--
                 checkFailed(event, refined)
             }
@@ -48,38 +50,39 @@ class Game(word: String) {
     }
 
     private fun initChars() {
-        remainingChars.add("АаFf")
-        remainingChars.add("Бб<,")
-        remainingChars.add("ВвDd")
-        remainingChars.add("ГгUu")
-        remainingChars.add("ДдLl")
-        remainingChars.add("ЕеTt")
-        remainingChars.add("Жж:;")
-        remainingChars.add("ЗзPp")
-        remainingChars.add("ИиBb")
-        remainingChars.add("ЙйQq")
-        remainingChars.add("КкRr")
-        remainingChars.add("ЛлKk")
-        remainingChars.add("МмVv")
-        remainingChars.add("НнYy")
-        remainingChars.add("ОоJj")
-        remainingChars.add("ПпGg")
-        remainingChars.add("РрHh")
-        remainingChars.add("СсCc")
-        remainingChars.add("ТтNn")
-        remainingChars.add("УуEe")
-        remainingChars.add("ФфAa")
-        remainingChars.add("Хх{[")
-        remainingChars.add("ЦцWw")
-        remainingChars.add("ЧчXx")
-        remainingChars.add("ШшIi")
-        remainingChars.add("ЩщOo")
-        remainingChars.add("Ъъ}]")
-        remainingChars.add("ЫыSs")
-        remainingChars.add("ЬьMm")
-        remainingChars.add("Ээ'\"")
-        remainingChars.add("Юю>.")
-        remainingChars.add("ЯяZz")
+        dictionary["АаFf"] = false
+        dictionary["Бб<,"] = false
+        dictionary["ВвDd"] = false
+        dictionary["ГгUu"] = false
+        dictionary["ДдLl"] = false
+        dictionary["ЕеTt"] = false
+        dictionary["Ёё`~"] = false
+        dictionary["Жж:;"] = false
+        dictionary["ЗзPp"] = false
+        dictionary["ИиBb"] = false
+        dictionary["ЙйQq"] = false
+        dictionary["КкRr"] = false
+        dictionary["ЛлKk"] = false
+        dictionary["МмVv"] = false
+        dictionary["НнYy"] = false
+        dictionary["ОоJj"] = false
+        dictionary["ПпGg"] = false
+        dictionary["РрHh"] = false
+        dictionary["СсCc"] = false
+        dictionary["ТтNn"] = false
+        dictionary["УуEe"] = false
+        dictionary["ФфAa"] = false
+        dictionary["Хх{["] = false
+        dictionary["ЦцWw"] = false
+        dictionary["ЧчXx"] = false
+        dictionary["ШшIi"] = false
+        dictionary["ЩщOo"] = false
+        dictionary["Ъъ}]"] = false
+        dictionary["ЫыSs"] = false
+        dictionary["ЬьMm"] = false
+        dictionary["Ээ'\""] = false
+        dictionary["Юю>."] = false
+        dictionary["ЯяZz"] = false
     }
 
     private fun finalStatus(): String? {
@@ -90,14 +93,20 @@ class Game(word: String) {
     private fun getMaskedWord(): String? {
         val items: MutableList<String> = LinkedList()
         for (charr in word!!.toCharArray()) {
-            val inPool = remainingChars.stream().filter { item: String -> item.contains(charr.toString() + "") }.findFirst()
-            if (inPool.isPresent) {
-                items.add("_")
-            } else {
-                items.add(charr.toString())
+            val dictEntry = findOptEntryInDict(charr.toString())
+            if (dictEntry.isPresent) {
+                items.add(if (dictEntry.get().value) dictEntry.get().key[0].toString() else "_")
             }
         }
         return "```${items.stream().collect(Collectors.joining(" "))}```"
+    }
+
+    private fun getMaskedDict(): String {
+        return dictionary.entries
+                .stream()
+                .map { entry: MutableMap.MutableEntry<String, Boolean> -> if (entry.value) "\u2588" else entry.key[0].toString() }
+                .collect(Collectors.joining(" "))
+                .trim()
     }
 
     private fun checkFailed(event: CommandEvent, refined: String) {
@@ -107,13 +116,13 @@ class Game(word: String) {
 Нет такой буквы ($refined)
 ${getMaskedWord()}
 Осталось ходов: $leftTurns
-Буквы, что не использованы: ${remainingChars.stream().map { e: String -> e[0].toString() }.collect(Collectors.joining(" "))}
+Буквы, что не использованы: ${getMaskedDict()}
 """
             )
         } else {
             event.reply("""
 Нет такой буквы ($refined)
-Ходов не осталось. Вот ты лох.
+Ходов не осталось.
 Загадано слово: $word
                     """
             )
@@ -122,24 +131,29 @@ ${getMaskedWord()}
     }
 
     private fun checkWin(event: CommandEvent, founded: String?, refined: String) {
-        for (charr in word!!.toCharArray()) {
-            val inPool = remainingChars.stream().filter { item: String -> item.contains(charr.toString() + "") }.findFirst()
-            if (inPool.isPresent) {
-                remainingChars.remove(founded)
-                if (remainingChars.stream().anyMatch { cc: String -> word!!.contains(cc[0].toString() + "") }) {
-                    event.reply("""
+        if (word!!
+                        .toCharArray()
+                        .map { charr: Char -> findOptEntryInDict(charr.toString()) }
+                        .all { opt -> opt.get().value }
+        ) {
+            isFinished = true
+            status = "Слово отгадано целиком: ${word}. Подибил <@${event.author?.id}>"
+            event.reply(status)
+        } else {
+            event.reply("""
 Есть такая буква ($refined)
 ${getMaskedWord()}
-Еще не использованы ${remainingChars.stream().map { e: String -> e[0].toString() }.collect(Collectors.joining(" "))}
+Еще не использованы ${getMaskedDict()}
 """
-                    )
-                    return
-                }
-                break
-            }
+            )
         }
-        isFinished = true
-        status = "Слово отгадано целиком: ${word}. Подибил <@${event.author.id}>"
-        event.reply(status)
     }
+
+    private fun findOptEntryInDict(suggest: String): Optional<MutableMap.MutableEntry<String, Boolean>> {
+        return dictionary.entries
+                .stream()
+                .filter { entry: MutableMap.MutableEntry<String, Boolean> -> entry.key.contains(suggest) }
+                .findFirst()
+    }
+
 }
