@@ -6,13 +6,12 @@ import net.dv8tion.jda.api.Permission
 import ru.chsergeig.bot.viselitsa.Game
 import ru.chsergeig.bot.viselitsa.RandomWordProvider
 
-class RandomWord : Command() {
+class SecretRandomWord : Command() {
 
     init {
-        name = "random"
-        help = "использовать случайное слово"
+        name = "secret"
+        help = "использовать случайное слово, неизвестное автору"
         botPermissions = arrayOf(Permission.MESSAGE_EMBED_LINKS)
-        guildOnly = false
     }
 
     override fun execute(event: CommandEvent?) {
@@ -23,7 +22,7 @@ class RandomWord : Command() {
         val word = RandomWordProvider().getWord()
         Game.currentGame = Game(word)
         event!!.reply("""
-Слово ${Game.currentGame!!.word} принято
+Слово принято
 Длина слова: ${word.length}
 Число попыток: ${Game.currentGame!!.leftTurns}
 """)

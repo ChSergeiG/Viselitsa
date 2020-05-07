@@ -11,6 +11,7 @@ import ru.chsergeig.bot.viselitsa.commands.AbortGame
 import ru.chsergeig.bot.viselitsa.commands.GetStatus
 import ru.chsergeig.bot.viselitsa.commands.Goos
 import ru.chsergeig.bot.viselitsa.commands.RandomWord
+import ru.chsergeig.bot.viselitsa.commands.SecretRandomWord
 import ru.chsergeig.bot.viselitsa.commands.StartGame
 import ru.chsergeig.bot.viselitsa.commands.SuggestChar
 import java.awt.Color
@@ -32,6 +33,7 @@ fun main(args: Array<String>) {
             GetStatus(),
             SuggestChar(),
             RandomWord(),
+            SecretRandomWord(),
             AbortGame(),
             Goos(),
             AboutCommand(

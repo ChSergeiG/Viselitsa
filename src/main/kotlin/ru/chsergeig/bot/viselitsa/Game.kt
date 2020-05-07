@@ -1,6 +1,7 @@
 package ru.chsergeig.bot.viselitsa
 
 import com.jagrosh.jdautilities.command.CommandEvent
+import ru.chsergeig.bot.viselitsa.model.StatisticsEntry
 import java.util.LinkedList
 import java.util.Optional
 import java.util.stream.Collectors
@@ -12,18 +13,26 @@ class Game(word: String) {
     }
 
     private val dictionary: MutableMap<String, Boolean> = LinkedHashMap()
-    private var leftTurns = -1
+    private val statistics: MutableList<StatisticsEntry> = ArrayList()
+    var leftTurns = -1
     private var status: String? = null
     var isFinished = false
     var word: String? = word.toUpperCase()
 
     init {
-        this.leftTurns = 18
+        word.toCollection(HashSet()).size
+        val limit = 16 - word.toCollection(HashSet()).size * 2 / 3
+        this.leftTurns = if (limit < 5) 5 else limit
         initChars()
     }
 
     fun getCurrentStatus(): String {
-        return "Осталось ходов: $leftTurns\nСлово: ${getMaskedWord()}\n${finalStatus()}"
+        return """
+Осталось попыток: $leftTurns
+Слово: ${getMaskedWord()}
+Буквы: ${getMaskedDict()}
+${finalStatus()}
+"""
     }
 
     fun terminate() {
@@ -39,14 +48,20 @@ class Game(word: String) {
             val refined = keyValue[0].toString()
             dictionary[keyValue] = true
             if (word!!.contains(refined)) {
+                addStatistics(StatisticsEntry.Status.SUCCESS, event, refined)
                 checkWin(event, keyValue, refined)
             } else {
+                addStatistics(StatisticsEntry.Status.FAIL, event, refined)
                 leftTurns--
                 checkFailed(event, refined)
             }
         } else {
             event.reply("Эту букву уже называли (или это вовсе не буква). А нормальные буквы завезут?")
         }
+    }
+
+    private fun addStatistics(status: StatisticsEntry.Status, event: CommandEvent, refined: String) {
+        statistics.add(StatisticsEntry(status, event.author.id, refined))
     }
 
     private fun initChars() {
@@ -115,38 +130,59 @@ class Game(word: String) {
             event.reply("""
 Нет такой буквы ($refined)
 ${getMaskedWord()}
-Осталось ходов: $leftTurns
+Осталось попыток: $leftTurns
 Буквы, что не использованы: ${getMaskedDict()}
 """
             )
         } else {
             event.reply("""
 Нет такой буквы ($refined)
-Ходов не осталось.
+Ходов не осталось. Спасибо, <@${event.author?.id}>, за просранную игру.
 Загадано слово: $word
-                    """
+Стата:
+${getSummary()}
+"""
             )
             isFinished = true
         }
     }
 
     private fun checkWin(event: CommandEvent, founded: String?, refined: String) {
-        if (word!!
-                        .toCharArray()
+        if (word!!.toCharArray()
                         .map { charr: Char -> findOptEntryInDict(charr.toString()) }
                         .all { opt -> opt.get().value }
         ) {
             isFinished = true
-            status = "Слово отгадано целиком: ${word}. Подибил <@${event.author?.id}>"
+            status = """
+Слово отгадано целиком: ${word}.
+Подибил <@${event.author?.id}>
+Стата:
+${getSummary()}
+"""
             event.reply(status)
         } else {
             event.reply("""
 Есть такая буква ($refined)
 ${getMaskedWord()}
+Осталось попыток: $leftTurns
 Еще не использованы ${getMaskedDict()}
 """
             )
         }
+    }
+
+    private fun getSummary(): String {
+        return statistics.stream()
+                .map { entry -> entry.id }
+                .distinct()
+                .map { id ->
+                    "<@$id> отгадал ${statistics.stream()
+                            .filter { entry -> entry.id == id && entry.status == StatisticsEntry.Status.SUCCESS }
+                            .count()} букв за ${statistics.stream()
+                            .filter { entry -> entry.id == id }
+                            .count()} попыток"
+                }
+                .collect(Collectors.joining("\n"))
     }
 
     private fun findOptEntryInDict(suggest: String): Optional<MutableMap.MutableEntry<String, Boolean>> {

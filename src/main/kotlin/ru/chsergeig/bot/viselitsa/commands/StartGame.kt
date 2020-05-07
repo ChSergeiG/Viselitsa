@@ -26,11 +26,11 @@ class StartGame : Command() {
                 "Слово короче твоего члена. ЕГО НЕТ, БЛЯДЬ"
         )
         Game.currentGame = Game(word)
-        event.reply("Слово ${Game.currentGame!!.word} принято")
-
-
-
-
+        event.reply("""
+Слово ${Game.currentGame!!.word} принято
+Длина слова: ${word.length}
+Число попыток: ${Game.currentGame!!.leftTurns}
+""")
     }
 
 }
