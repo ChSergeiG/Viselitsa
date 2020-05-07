@@ -21,7 +21,7 @@ class Game(word: String) {
 
     init {
         word.toCollection(HashSet()).size
-        val limit = 16 - word.toCollection(HashSet()).size * 2 / 3
+        val limit = 15 - word.toCollection(HashSet()).size * 2 / 3
         this.leftTurns = if (limit < 5) 5 else limit
         initChars()
     }
@@ -131,7 +131,7 @@ ${finalStatus()}
 Нет такой буквы ($refined)
 ${getMaskedWord()}
 Осталось попыток: $leftTurns
-Буквы, что не использованы: ${getMaskedDict()}
+Буквы: ${getMaskedDict()}
 """
             )
         } else {
@@ -165,7 +165,7 @@ ${getSummary()}
 Есть такая буква ($refined)
 ${getMaskedWord()}
 Осталось попыток: $leftTurns
-Еще не использованы ${getMaskedDict()}
+Буквы: ${getMaskedDict()}
 """
             )
         }
@@ -180,9 +180,16 @@ ${getMaskedWord()}
                             .filter { entry -> entry.id == id && entry.status == StatisticsEntry.Status.SUCCESS }
                             .count()} букв за ${statistics.stream()
                             .filter { entry -> entry.id == id }
-                            .count()} попыток"
-                }
-                .collect(Collectors.joining("\n"))
+                            .count()} попыток [${statistics.stream()
+                            .filter { entry -> entry.id == id && entry.status == StatisticsEntry.Status.SUCCESS }
+                            .map { entry -> entry.refined }
+                            .collect(Collectors.joining(""))
+                    }/${statistics.stream()
+                            .filter { entry -> entry.id == id && entry.status == StatisticsEntry.Status.FAIL }
+                            .map { entry -> entry.refined }
+                            .collect(Collectors.joining(""))
+                    }]"
+                }.collect(Collectors.joining("\n"))
     }
 
     private fun findOptEntryInDict(suggest: String): Optional<MutableMap.MutableEntry<String, Boolean>> {
