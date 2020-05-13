@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.ShadowExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 repositories {
@@ -6,12 +7,13 @@ repositories {
 }
 
 plugins {
+    id("com.github.johnrengelman.shadow") version "4.0.1"
+    id("io.ratpack.ratpack-java") version "1.5.4"
     kotlin("jvm") version "1.3.72"
 }
 
 group = "ru.chsergeig.bot.viselitsa"
 version = "1.0.4"
-
 
 dependencies {
     implementation(group = "net.dv8tion", name = "JDA", version = "4.1.1_140")
@@ -31,4 +33,12 @@ compileKotlin.kotlinOptions {
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
+}
+
+configure<ShadowExtension> {
+    applicationDistribution.from("src/main/kotlin")
+}
+
+configure<JavaApplication> {
+    mainClassName = "ru.chsergeig.bot.viselitsa.MainKt"
 }
