@@ -9,11 +9,12 @@ repositories {
 plugins {
     id("com.github.johnrengelman.shadow") version "4.0.1"
     id("io.ratpack.ratpack-java") version "1.5.4"
+    application
     kotlin("jvm") version "1.3.72"
 }
 
 group = "ru.chsergeig.bot.viselitsa"
-version = "1.0.4"
+version = "1.0.5"
 
 dependencies {
     implementation(group = "net.dv8tion", name = "JDA", version = "4.1.1_140")

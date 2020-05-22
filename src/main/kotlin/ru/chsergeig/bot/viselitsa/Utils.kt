@@ -24,7 +24,11 @@ class Utils private constructor() {
         }
 
         @JvmStatic
-        fun getValueFromCliArg(args: Array<String>, prefix: String, valueDef: String): String {
+        fun safeGetValueFromEvOrCli(args: Array<String>, prefix: String, valueDef: String, envVar: String?): String {
+            val valueFromEnv: String? = System.getenv()[envVar]
+            if (!valueFromEnv.isNullOrEmpty()) {
+                return valueFromEnv
+            }
             val value: String = args.first { arg: String -> arg.startsWith(prefix) }
             if (value.isNotEmpty() && value.contains("=")) {
                 return value.split("=")[1]

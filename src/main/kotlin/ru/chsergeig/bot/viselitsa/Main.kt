@@ -17,12 +17,12 @@ import ru.chsergeig.bot.viselitsa.commands.SuggestChar
 import java.awt.Color
 
 fun main(args: Array<String>) {
-    if (args.size != 2) {
-        throw RuntimeException("Via args[] should pass token and ownerId")
-    }
-    val token: String = Utils.getValueFromCliArg(args, "token=", "Token")
-    val ownerId: String = Utils.getValueFromCliArg(args, "ownerId=", "Owner ID")
+    val token: String = Utils.safeGetValueFromEvOrCli(args, "token=", "Token", "TOKEN")
+    val ownerId: String = Utils.safeGetValueFromEvOrCli(args, "ownerId=", "Owner ID", "OWNER_ID")
     val client = CommandClientBuilder()
+    if (token.isEmpty() || ownerId.isEmpty()) {
+        throw RuntimeException("Token and ownerId should pass via args or environment variables")
+    }
     client.setStatus(OnlineStatus.ONLINE)
     client.setActivity(Activity.listening("дичь"))
     client.setOwnerId(ownerId)
