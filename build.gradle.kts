@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "ru.chsergeig.bot.viselitsa"
-version = "1.0.5"
+version = "1.0.6"
 
 dependencies {
     implementation(group = "net.dv8tion", name = "JDA", version = "4.1.1_140")

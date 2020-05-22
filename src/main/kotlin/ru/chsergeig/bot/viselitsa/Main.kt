@@ -24,7 +24,7 @@ fun main(args: Array<String>) {
         throw RuntimeException("Token and ownerId should pass via args or environment variables")
     }
     client.setStatus(OnlineStatus.ONLINE)
-    client.setActivity(Activity.listening("дичь"))
+    client.setActivity(Activity.listening("всякую дичь"))
     client.setOwnerId(ownerId)
     client.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26")
     client.setPrefix("!")
