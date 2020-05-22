@@ -14,10 +14,10 @@ plugins {
 }
 
 group = "ru.chsergeig.bot.viselitsa"
-version = "1.0.6"
+version = "1.0.7"
 
 dependencies {
-    implementation(group = "net.dv8tion", name = "JDA", version = "4.1.1_140")
+    implementation(group = "net.dv8tion", name = "JDA", version = "4.1.1_154")
     implementation(group = "com.jagrosh", name = "jda-utilities", version = "3.0.3")
     implementation(group = "com.mashape.unirest", name = "unirest-java", version = "1.4.9")
     implementation(group = "org.apache.httpcomponents", name = "httpclient", version = "4.1.1")
