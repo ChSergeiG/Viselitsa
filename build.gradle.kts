@@ -34,6 +34,8 @@ dependencies {
     implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.11.0")
 
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.6.2")
+    testImplementation(group = "org.mockito", name = "mockito-core", version = "2.7.22")
+    testImplementation(group = "org.mockito", name = "mockito-junit-jupiter", version = "3.3.3")
 }
 
 val compileKotlin: KotlinCompile by tasks

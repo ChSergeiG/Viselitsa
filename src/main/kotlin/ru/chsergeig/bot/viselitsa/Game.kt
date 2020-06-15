@@ -21,12 +21,14 @@ class Game(word: String) {
     var word: String?
 
     init {
-        word.toCollection(HashSet()).size
         val limit = 15 - word.toCollection(HashSet()).size * 2 / 3
         this.leftTurns = if (limit < 5) 5 else limit
         initChars()
         this.originWord = word
         this.word = Utils.purifyWord(word.toUpperCase(), dictionary)
+        if (this.word!!.isEmpty()) {
+            isFinished = true
+        }
     }
 
     fun getCurrentStatus(): String {
@@ -52,7 +54,7 @@ ${finalStatus()}
             dictionary[keyValue] = true
             if (word!!.contains(refined)) {
                 addStatistics(StatisticsEntry.Status.SUCCESS, event, refined)
-                checkWin(event, keyValue, refined)
+                checkWin(event, refined)
             } else {
                 addStatistics(StatisticsEntry.Status.FAIL, event, refined)
                 leftTurns--
@@ -128,7 +130,6 @@ ${finalStatus()}
     }
 
     private fun checkFailed(event: CommandEvent, refined: String) {
-
         if (leftTurns > 0) {
             event.reply("""
 Нет такой буквы ($refined)
@@ -150,7 +151,7 @@ ${getSummary()}
         }
     }
 
-    private fun checkWin(event: CommandEvent, founded: String?, refined: String) {
+    private fun checkWin(event: CommandEvent, refined: String) {
         if (word!!.toCharArray()
                         .map { charr: Char -> findOptEntryInDict(charr.toString()) }
                         .all { opt -> opt.get().value }
