@@ -17,13 +17,16 @@ class Game(word: String) {
     var leftTurns = -1
     private var status: String? = null
     var isFinished = false
-    var word: String? = word.toUpperCase()
+    private var originWord: String?
+    var word: String?
 
     init {
         word.toCollection(HashSet()).size
         val limit = 15 - word.toCollection(HashSet()).size * 2 / 3
         this.leftTurns = if (limit < 5) 5 else limit
         initChars()
+        this.originWord = word
+        this.word = Utils.purifyWord(word.toUpperCase(), dictionary)
     }
 
     fun getCurrentStatus(): String {
@@ -138,7 +141,7 @@ ${getMaskedWord()}
             event.reply("""
 Нет такой буквы ($refined)
 Ходов не осталось. Спасибо, <@${event.author?.id}>, за просранную игру.
-Загадано слово: $word
+Загадано слово: $word [$originWord].
 Стата:
 ${getSummary()}
 """
@@ -154,7 +157,7 @@ ${getSummary()}
         ) {
             isFinished = true
             status = """
-Слово отгадано целиком: ${word}.
+Слово отгадано целиком: $word [$originWord].
 Подибил <@${event.author?.id}>
 Стата:
 ${getSummary()}

@@ -36,6 +36,16 @@ class Utils private constructor() {
                 throw RuntimeException("$valueDef is empty or not valid")
             }
         }
+
+        @JvmStatic
+        fun purifyWord(word: String, dictionary: MutableMap<String, Boolean>): String {
+            return word.splitToSequence("").filter { charr: String ->
+                dictionary.entries.stream()
+                        .filter { entry: Map.Entry<String, Boolean> -> entry.key.contains(charr) }
+                        .findFirst()
+                        .isPresent
+            }.joinToString(separator = "", truncated = "")
+        }
     }
 
 }
