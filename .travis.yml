@@ -1,3 +1,8 @@
 language: java
+
+jdk: openjdk9
+
+install: skip
+
 script:
-    - ./gradlew test
+    - ./gradlew test coveralls
