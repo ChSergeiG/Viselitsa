@@ -29,7 +29,11 @@ class Utils private constructor() {
             if (!valueFromEnv.isNullOrEmpty()) {
                 return valueFromEnv
             }
-            val value: String = args.first { arg: String -> arg.startsWith(prefix) }
+            val value: String = try {
+                args.first { arg: String -> arg.startsWith(prefix) }
+            } catch (e: Exception) {
+                throw RuntimeException("No CLI value with prefix $prefix", e)
+            }
             if (value.isNotEmpty() && value.contains("=")) {
                 return value.split("=")[1]
             } else {
@@ -38,7 +42,7 @@ class Utils private constructor() {
         }
 
         @JvmStatic
-        fun purifyWord(word: String, dictionary: MutableMap<String, Boolean>): String {
+        fun purifyWord(word: String, dictionary: Map<String, Boolean>): String {
             return word.splitToSequence("").filter { charr: String ->
                 dictionary.entries.stream()
                         .filter { entry: Map.Entry<String, Boolean> -> entry.key.contains(charr) }
