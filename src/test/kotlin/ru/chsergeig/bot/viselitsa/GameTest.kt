@@ -118,6 +118,14 @@ internal class GameTest {
         Assertions.assertEquals(12, game.leftTurns)
     }
 
+    @Test
+    fun terminateTest() {
+        val game = Game("Слово")
+        game.terminate()
+        Assertions.assertTrue(StringUtils.contains(game.getCurrentStatus(), "Оно было рождено, чтобы умереть"))
+        Assertions.assertTrue(game.isFinished)
+    }
+
     private fun suggestChars(event: CommandEvent, game: Game, vararg chars: String) {
         for (char in chars) {
             Mockito.`when`(event.args).thenReturn(char)

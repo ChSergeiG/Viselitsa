@@ -17,15 +17,15 @@ class AbortGame : Command() {
     override fun execute(event: CommandEvent?) {
         val currentGame: Game? = Game.currentGame
         if (currentGame == null) {
-            event!!.reply("Да ты конченый. Нихуя нет, что абортать. Тупц")
+            event?.reply("Да ты конченый. Нихуя нет, что абортать. Тупц")
             return
         }
         if (currentGame.isFinished) {
-            event!!.reply("Я смотрю, ты не очень умен. Контрольный в голову, da?")
+            event?.reply("Я смотрю, ты не очень умен. Контрольный в голову, da?")
             return
         }
         currentGame.terminate()
-        event!!.reply("Потрачено")
+        event?.reply("Потрачено")
     }
 
 }

@@ -46,15 +46,14 @@ class Goos : Command() {
     init {
         name = "goose"
         aliases = arrayOf("бунд")
-        help = "Начать игру"
+        help = "Запустить гуся"
         botPermissions = arrayOf(Permission.MESSAGE_EMBED_LINKS)
         guildOnly = false
     }
 
 
     override fun execute(event: CommandEvent?) {
-        event!!.reply(dict[ThreadLocalRandom.current().nextInt() % dict.size])
+        event?.reply(dict[ThreadLocalRandom.current().nextInt() % dict.size])
     }
-
 
 }

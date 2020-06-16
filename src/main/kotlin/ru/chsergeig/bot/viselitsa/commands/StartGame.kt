@@ -17,7 +17,7 @@ class StartGame : Command() {
 
     override fun execute(event: CommandEvent?) {
         if (Game.currentGame != null && !Game.currentGame!!.isFinished) {
-            event!!.replyError("Куда прёшь? Еще не окончена предыдущая игра")
+            event?.replyError("Куда прёшь? Еще не окончена предыдущая игра")
             return
         }
         val word = checkSingleArgAndGet(

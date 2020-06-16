@@ -18,14 +18,14 @@ class GetStatus : Command() {
 
         val currentGame = Game.currentGame
         if (currentGame == null) {
-            event!!.reply("Нихуя игры нет")
+            event?.reply("Нихуя игры нет")
             return
         }
         if (!currentGame.isFinished) {
-            event!!.reply(currentGame.getCurrentStatus())
+            event?.reply(currentGame.getCurrentStatus())
             return
         }
-        event!!.reply("Игра уже кончилась, ало!")
+        event?.reply("Игра уже кончилась, ало!")
     }
 
 }
