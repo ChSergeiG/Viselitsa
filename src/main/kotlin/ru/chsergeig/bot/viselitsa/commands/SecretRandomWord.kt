@@ -10,23 +10,22 @@ class SecretRandomWord : Command() {
 
     init {
         name = "secret"
-        help = "использовать случайное слово, неизвестное автору"
+        help = "Использовать случайное слово, неизвестное автору"
         botPermissions = arrayOf(Permission.MESSAGE_EMBED_LINKS)
     }
 
     override fun execute(event: CommandEvent?) {
         if (Game.currentGame != null && !Game.currentGame!!.isFinished) {
-            event!!.replyError("Куда прёшь? Еще не окончена предыдущая игра")
+            event?.replyError("Куда прёшь? Еще не окончена предыдущая игра")
             return
         }
         val word = RandomWordProvider().getWord()
         Game.currentGame = Game(word)
-        event!!.reply("""
+        event?.reply("""
 Слово принято
 Длина слова: ${word.length}
 Число попыток: ${Game.currentGame!!.leftTurns}
 """)
-
     }
 
 }

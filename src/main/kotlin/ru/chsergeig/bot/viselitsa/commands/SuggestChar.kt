@@ -17,16 +17,15 @@ class SuggestChar : Command() {
 
     override fun execute(event: CommandEvent?) {
         if (null == Game.currentGame) {
-            event!!.reply("Может, стоит сначала начать игру, не?")
+            event?.reply("Может, стоит сначала начать игру, не?")
             return
         }
         if (!Game.currentGame!!.isFinished) {
             checkSingleArgAndGet(event!!, "Понаписал то...", "Чо? Буквы не завезли чоль?")
             Game.currentGame!!.suggestChar(event)
         } else {
-            event!!.reply("Игра уже кончилась, ало!")
+            event?.reply("Игра уже кончилась, ало!")
         }
-
     }
 
 }

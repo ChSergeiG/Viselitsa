@@ -15,8 +15,8 @@ class ShutDown : Command() {
     }
 
     override fun execute(event: CommandEvent?) {
-        event!!.reactWarning()
-        event.jda.shutdown()
+        event?.reactWarning()
+        event?.jda?.shutdown()
         exitProcess(0)
     }
 
