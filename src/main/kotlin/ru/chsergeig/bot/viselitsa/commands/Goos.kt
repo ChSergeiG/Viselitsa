@@ -3,7 +3,8 @@ package ru.chsergeig.bot.viselitsa.commands
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 import net.dv8tion.jda.api.Permission
-import java.util.concurrent.ThreadLocalRandom
+import java.util.stream.Collectors
+import java.util.stream.IntStream
 
 class Goos : Command() {
 
@@ -50,10 +51,11 @@ class Goos : Command() {
         botPermissions = arrayOf(Permission.MESSAGE_EMBED_LINKS)
         guildOnly = false
     }
-
-
+    
     override fun execute(event: CommandEvent?) {
-        event?.reply(dict[ThreadLocalRandom.current().nextInt() % dict.size])
+        val lst: MutableList<Int> = IntStream.range(0, dict.size).boxed().collect(Collectors.toList())
+        lst.shuffle()
+        event?.reply(dict[lst[0]])
     }
 
 }
