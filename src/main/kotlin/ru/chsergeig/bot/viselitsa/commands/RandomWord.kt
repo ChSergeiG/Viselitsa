@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.command.CommandEvent
 import net.dv8tion.jda.api.Permission
 import ru.chsergeig.bot.viselitsa.Game
 import ru.chsergeig.bot.viselitsa.RandomWordProvider
+import ru.chsergeig.bot.viselitsa.RandomWordProviderHolder
 
 class RandomWord : Command() {
 
@@ -20,7 +21,7 @@ class RandomWord : Command() {
             event?.replyError("Куда прёшь? Еще не окончена предыдущая игра")
             return
         }
-        val word = RandomWordProvider().getWord(RandomWordProvider.Provider.SANSTV)
+        val word = RandomWordProvider().getWord(RandomWordProviderHolder.provider)
         Game.currentGame = Game(word)
         event?.reply("""
 Слово ${Game.currentGame!!.word} принято

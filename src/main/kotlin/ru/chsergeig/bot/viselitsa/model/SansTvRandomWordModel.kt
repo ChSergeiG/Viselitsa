@@ -10,18 +10,11 @@ class SansTvRandomWordModel {
     @JacksonXmlElementWrapper(localName = "ol")
     var words: MutableList<Word> = ArrayList()
 
-}
+    class Word {
 
-class Words {
+        @JacksonXmlProperty(localName = "a")
+        var value: String = ""
 
-    @JacksonXmlProperty(localName = "li")
-    var words: MutableList<Word> = ArrayList()
-
-}
-
-class Word {
-
-    @JacksonXmlProperty(localName = "a")
-    var value: String = ""
+    }
 
 }

@@ -17,7 +17,7 @@ internal class GameTest {
 
     @BeforeEach
     fun disableWaitList () {
-        WaitList.disable()
+        WaitListHolder.disable()
     }
 
     @Test

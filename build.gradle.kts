@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "ru.chsergeig.bot.viselitsa"
-version = "1.0.14"
+version = "1.0.15"
 
 jacoco {
     toolVersion = "0.8.4"
@@ -37,6 +37,7 @@ dependencies {
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.6.2")
     testImplementation(group = "org.mockito", name = "mockito-core", version = "2.7.22")
     testImplementation(group = "org.mockito", name = "mockito-junit-jupiter", version = "3.3.3")
+    testImplementation(group = "io.github.artsok", name = "rerunner-jupiter", version = "2.1.6")
 }
 
 val compileKotlin: KotlinCompile by tasks

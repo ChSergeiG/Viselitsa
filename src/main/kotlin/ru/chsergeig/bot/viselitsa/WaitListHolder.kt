@@ -4,7 +4,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
-class WaitList {
+class WaitListHolder {
 
     companion object {
 

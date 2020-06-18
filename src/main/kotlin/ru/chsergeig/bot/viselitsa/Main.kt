@@ -11,6 +11,7 @@ import ru.chsergeig.bot.viselitsa.commands.GetStatus
 import ru.chsergeig.bot.viselitsa.commands.Goos
 import ru.chsergeig.bot.viselitsa.commands.RandomWord
 import ru.chsergeig.bot.viselitsa.commands.SecretRandomWord
+import ru.chsergeig.bot.viselitsa.commands.SetRandomWordProvider
 import ru.chsergeig.bot.viselitsa.commands.ShutDown
 import ru.chsergeig.bot.viselitsa.commands.StartGame
 import ru.chsergeig.bot.viselitsa.commands.SuggestChar
@@ -24,7 +25,7 @@ fun main(args: Array<String>) {
     if (token.isEmpty() || ownerId.isEmpty()) {
         throw RuntimeException("Token and ownerId should pass via args or environment variables")
     }
-    WaitList.flush()
+    WaitListHolder.flush()
     client.setStatus(OnlineStatus.ONLINE)
     client.setActivity(Activity.listening("всякую дичь"))
     client.setOwnerId(ownerId)
@@ -40,10 +41,11 @@ fun main(args: Array<String>) {
             Goos(),
             ShutDown(),
             WaitTime(),
+            SetRandomWordProvider(),
             AboutCommand(
                     Color.GREEN,
                     "можете звать меня просто Виселичка",
-                    arrayOf("Теперь на котлине, хуле. Репо: ${Utils.url}"),
+                    arrayOf("Теперь на котлине, ага. Репо: ${Utils.url}"),
                     Permission.ADMINISTRATOR)
     )
     JDABuilder.createDefault(token)
