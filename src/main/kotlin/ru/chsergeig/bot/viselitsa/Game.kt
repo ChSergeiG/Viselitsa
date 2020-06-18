@@ -29,6 +29,7 @@ class Game(word: String) {
         if (this.word!!.isEmpty()) {
             isFinished = true
         }
+        WaitList.flush()
     }
 
     fun getCurrentStatus(): String {
@@ -46,6 +47,10 @@ ${finalStatus()}
     }
 
     fun suggestChar(event: CommandEvent) {
+        if (!checkUserNotWaits(event)) {
+            return
+        }
+        addUserToWaitList(event)
         val firstChar = event.args.split("\\s+".toRegex()).toTypedArray()[0][0].toString()
         val foundedInDictionary = findOptEntryInDict(firstChar)
         if (foundedInDictionary.isPresent && !foundedInDictionary.get().value) {
@@ -63,6 +68,18 @@ ${finalStatus()}
         } else {
             event.reply("Эту букву уже называли (или это вовсе не буква). А нормальные буквы завезут?")
         }
+    }
+
+    private fun checkUserNotWaits(event: CommandEvent): Boolean {
+        if (WaitList.checkWaits(event.author.id)) {
+            event.reply("<@${event.author.id}> Не так быстро, петушок")
+            return false
+        }
+        return true
+    }
+
+    private fun addUserToWaitList(event: CommandEvent) {
+        WaitList.add(event.author.id)
     }
 
     private fun addStatistics(status: StatisticsEntry.Status, event: CommandEvent, refined: String) {

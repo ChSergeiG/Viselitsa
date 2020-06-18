@@ -18,6 +18,7 @@ import ru.chsergeig.bot.viselitsa.commands.SecretRandomWord
 import ru.chsergeig.bot.viselitsa.commands.ShutDown
 import ru.chsergeig.bot.viselitsa.commands.StartGame
 import ru.chsergeig.bot.viselitsa.commands.SuggestChar
+import ru.chsergeig.bot.viselitsa.commands.WaitTime
 import java.util.stream.Stream
 
 internal class CommandsTest {
@@ -115,6 +116,14 @@ internal class CommandsTest {
                             "Предложить букву",
                             arrayOf(Permission.MESSAGE_WRITE),
                             true,
+                            false),
+                    Arguments.of(
+                            WaitTime::class.java,
+                            "wait",
+                            ArrayList<String>(),
+                            "Установить ожидание игроков",
+                            arrayOf(Permission.MESSAGE_EMBED_LINKS),
+                            false,
                             false)
 
             )

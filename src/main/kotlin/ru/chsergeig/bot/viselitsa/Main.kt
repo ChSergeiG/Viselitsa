@@ -14,6 +14,7 @@ import ru.chsergeig.bot.viselitsa.commands.SecretRandomWord
 import ru.chsergeig.bot.viselitsa.commands.ShutDown
 import ru.chsergeig.bot.viselitsa.commands.StartGame
 import ru.chsergeig.bot.viselitsa.commands.SuggestChar
+import ru.chsergeig.bot.viselitsa.commands.WaitTime
 import java.awt.Color
 
 fun main(args: Array<String>) {
@@ -23,6 +24,7 @@ fun main(args: Array<String>) {
     if (token.isEmpty() || ownerId.isEmpty()) {
         throw RuntimeException("Token and ownerId should pass via args or environment variables")
     }
+    WaitList.flush()
     client.setStatus(OnlineStatus.ONLINE)
     client.setActivity(Activity.listening("всякую дичь"))
     client.setOwnerId(ownerId)
@@ -37,6 +39,7 @@ fun main(args: Array<String>) {
             AbortGame(),
             Goos(),
             ShutDown(),
+            WaitTime(),
             AboutCommand(
                     Color.GREEN,
                     "можете звать меня просто Виселичка",
