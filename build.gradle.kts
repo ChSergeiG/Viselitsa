@@ -32,6 +32,7 @@ dependencies {
     implementation(group = "org.apache.httpcomponents", name = "httpclient", version = "4.1.1")
     implementation(group = "commons-lang", name = "commons-lang", version = "2.6")
     implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.11.0")
+    implementation(group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-xml", version = "2.11.0")
 
     testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.6.2")
     testImplementation(group = "org.mockito", name = "mockito-core", version = "2.7.22")

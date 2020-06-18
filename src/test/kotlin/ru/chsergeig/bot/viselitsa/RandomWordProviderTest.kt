@@ -8,7 +8,7 @@ internal class RandomWordProviderTest {
 
     @Test
     fun getWord() {
-        Assertions.assertTrue(StringUtils.isNotBlank(RandomWordProvider().getWord()))
+        Assertions.assertTrue(StringUtils.isNotBlank(RandomWordProvider().getWord(RandomWordProvider.Provider.SANSTV)))
     }
 
 }

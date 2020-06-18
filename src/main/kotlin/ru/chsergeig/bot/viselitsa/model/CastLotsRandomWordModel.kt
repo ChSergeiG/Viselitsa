@@ -1,6 +1,6 @@
 package ru.chsergeig.bot.viselitsa.model
 
-class RandomWordModel {
+class CastLotsRandomWordModel {
 
     var success: Boolean = false
     var va: String = ""
