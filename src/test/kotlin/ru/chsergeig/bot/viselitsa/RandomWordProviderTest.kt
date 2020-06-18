@@ -1,14 +1,14 @@
 package ru.chsergeig.bot.viselitsa
 
+import io.github.artsok.RepeatedIfExceptionsTest
 import org.apache.commons.lang.StringUtils
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
 
 internal class RandomWordProviderTest {
 
-    @Test
+    @RepeatedIfExceptionsTest(repeats = 2)
     fun getWord() {
-        Assertions.assertTrue(StringUtils.isNotBlank(RandomWordProvider().getWord(RandomWordProvider.Provider.SANSTV)))
+        Assertions.assertTrue(StringUtils.isNotBlank(RandomWordProvider().getWord(RandomWordProviderHolder.provider)))
     }
 
 }

@@ -18,7 +18,7 @@ class GetStatus : Command() {
 
         val currentGame = Game.currentGame
         if (currentGame == null) {
-            event?.reply("Нихуя игры нет")
+            event?.reply("Ваще игры нет")
             return
         }
         if (!currentGame.isFinished) {

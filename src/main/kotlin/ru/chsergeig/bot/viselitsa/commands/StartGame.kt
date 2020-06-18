@@ -5,7 +5,6 @@ import com.jagrosh.jdautilities.command.CommandEvent
 import net.dv8tion.jda.api.Permission
 import ru.chsergeig.bot.viselitsa.Game
 import ru.chsergeig.bot.viselitsa.Utils.Companion.checkSingleArgAndGet
-import ru.chsergeig.bot.viselitsa.WaitList
 
 class StartGame : Command() {
 

@@ -15,6 +15,7 @@ import ru.chsergeig.bot.viselitsa.commands.GetStatus
 import ru.chsergeig.bot.viselitsa.commands.Goos
 import ru.chsergeig.bot.viselitsa.commands.RandomWord
 import ru.chsergeig.bot.viselitsa.commands.SecretRandomWord
+import ru.chsergeig.bot.viselitsa.commands.SetRandomWordProvider
 import ru.chsergeig.bot.viselitsa.commands.ShutDown
 import ru.chsergeig.bot.viselitsa.commands.StartGame
 import ru.chsergeig.bot.viselitsa.commands.SuggestChar
@@ -92,6 +93,14 @@ internal class CommandsTest {
                             "Использовать случайное слово, неизвестное автору",
                             arrayOf(Permission.MESSAGE_EMBED_LINKS),
                             true,
+                            false),
+                    Arguments.of(
+                            SetRandomWordProvider::class.java,
+                            "provider",
+                            ArrayList<String>(),
+                            "Указать провайдер слов. Варианты: '${RandomWordProvider.Provider.values().contentToString()}'",
+                            arrayOf(Permission.MESSAGE_EMBED_LINKS),
+                            false,
                             false),
                     Arguments.of(
                             ShutDown::class.java,

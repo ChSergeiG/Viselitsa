@@ -29,7 +29,7 @@ class Game(word: String) {
         if (this.word!!.isEmpty()) {
             isFinished = true
         }
-        WaitList.flush()
+        WaitListHolder.flush()
     }
 
     fun getCurrentStatus(): String {
@@ -71,7 +71,7 @@ ${finalStatus()}
     }
 
     private fun checkUserNotWaits(event: CommandEvent): Boolean {
-        if (WaitList.checkWaits(event.author.id)) {
+        if (WaitListHolder.checkWaits(event.author.id)) {
             event.reply("<@${event.author.id}> Не так быстро, петушок")
             return false
         }
@@ -79,7 +79,7 @@ ${finalStatus()}
     }
 
     private fun addUserToWaitList(event: CommandEvent) {
-        WaitList.add(event.author.id)
+        WaitListHolder.add(event.author.id)
     }
 
     private fun addStatistics(status: StatisticsEntry.Status, event: CommandEvent, refined: String) {

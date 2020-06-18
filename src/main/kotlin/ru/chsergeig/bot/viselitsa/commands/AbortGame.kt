@@ -17,7 +17,7 @@ class AbortGame : Command() {
     override fun execute(event: CommandEvent?) {
         val currentGame: Game? = Game.currentGame
         if (currentGame == null) {
-            event?.reply("Да ты конченый. Нихуя нет, что абортать. Тупц")
+            event?.reply("Да ты ниок. Нет, что абортать. Тупц")
             return
         }
         if (currentGame.isFinished) {

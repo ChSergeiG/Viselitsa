@@ -3,9 +3,8 @@ package ru.chsergeig.bot.viselitsa.commands
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 import net.dv8tion.jda.api.Permission
-import ru.chsergeig.bot.viselitsa.WaitList
+import ru.chsergeig.bot.viselitsa.WaitListHolder
 import java.lang.Long.parseLong
-import java.lang.NumberFormatException
 
 class WaitTime : Command() {
 
@@ -22,11 +21,10 @@ class WaitTime : Command() {
             return
         }
         try {
-            WaitList.setTimeToWait(parseLong(event.args.split("\\s+".toRegex())[0]))
-            event.reply("Установлено ${WaitList.getTimeToWait()}")
+            WaitListHolder.setTimeToWait(parseLong(event.args.split("\\s+".toRegex())[0]))
+            event.reply("Установлено ${WaitListHolder.getTimeToWait()}")
         } catch (e: NumberFormatException) {
             event.reply("Тупица. Нужно ожидание в миллисекундах указать какбе. ${e.localizedMessage}")
-            return
         }
     }
 
