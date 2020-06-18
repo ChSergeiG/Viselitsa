@@ -22,7 +22,7 @@ import java.util.stream.Stream
 
 internal class CommandsTest {
 
-    @ParameterizedTest(name = "Testing command constructor with name '{1}'")
+    @ParameterizedTest
     @ArgumentsSource(CommandProvider::class)
     fun constructCommand(
             clazz: Class<*>,
