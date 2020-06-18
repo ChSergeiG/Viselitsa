@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.command.CommandEvent
 import net.dv8tion.jda.api.entities.User
 import org.apache.commons.lang.StringUtils
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -13,6 +14,11 @@ import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
 internal class GameTest {
+
+    @BeforeEach
+    fun disableWaitList () {
+        WaitList.disable()
+    }
 
     @Test
     fun constructGame() {
