@@ -17,7 +17,6 @@ class WaitListHolder {
 
         private val waitListChecker: Runnable = Runnable {
             waitList.keys.filter { System.nanoTime() - it > timeToWait }.forEach { waitList.remove(it) }
-
         }
 
         fun disable() {

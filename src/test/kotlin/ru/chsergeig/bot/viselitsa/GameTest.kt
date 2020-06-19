@@ -3,6 +3,7 @@ package ru.chsergeig.bot.viselitsa
 import com.jagrosh.jdautilities.command.CommandEvent
 import net.dv8tion.jda.api.entities.User
 import org.apache.commons.lang.StringUtils
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -18,6 +19,11 @@ internal class GameTest {
     @BeforeEach
     fun disableWaitList () {
         WaitListHolder.disable()
+    }
+
+    @AfterEach
+    fun enableWaitList () {
+        WaitListHolder.enable()
     }
 
     @Test
@@ -75,6 +81,19 @@ internal class GameTest {
         Assertions.assertTrue(StringUtils.contains(status, "Буквы: А Б █ Г "))
         Assertions.assertTrue(StringUtils.contains(status, "Подибил <@mock_user_id>"))
         Assertions.assertTrue(StringUtils.contains(status, "<@mock_user_id> отгадал 4 букв за 4 попыток [СЛОВ/]"))
+    }
+
+    @Test
+    @DisplayName("Check getCurrentStatus() return valid information after game failed")
+    fun getCurrentStatusTest3(@Mock event: CommandEvent, @Mock user: User) {
+        Mockito.`when`(event.author).thenReturn(user)
+        Mockito.`when`(user.id).thenReturn("mock_user_id")
+
+        val game = Game("Слово")
+        suggestChars(event, game, "А", "Б", "Г", "Д", "Е", "Ж", "З", "И", "Й", "К", "М", "Н", "П")
+
+        Assertions.assertEquals(0, game.leftTurns)
+        Assertions.assertTrue(game.isFinished)
     }
 
     @Test
