@@ -1,5 +1,6 @@
 package ru.chsergeig.bot.viselitsa.commands
 
+import com.fasterxml.jackson.databind.JsonMappingException
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 import net.dv8tion.jda.api.Permission
@@ -20,7 +21,13 @@ class SecretRandomWord : Command() {
             event?.replyError("Куда прёшь? Еще не окончена предыдущая игра")
             return
         }
-        val word = RandomWordProvider().getWord(RandomWordProviderHolder.provider)
+        val word: String
+        try {
+            word = RandomWordProvider().getWord(RandomWordProviderHolder.provider)
+        } catch (e: JsonMappingException) {
+            event?.reply("Не получилось получить слово. Попробуй еще раз\n${e.localizedMessage}")
+            return
+        }
         Game.currentGame = Game(word)
         event?.reply("""
 Слово принято
