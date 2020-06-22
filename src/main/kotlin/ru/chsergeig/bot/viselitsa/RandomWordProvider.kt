@@ -8,6 +8,7 @@ import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.client.utils.URIBuilder
 import org.apache.http.impl.client.HttpClientBuilder
+import ru.chsergeig.bot.viselitsa.exception.SansDeserializationException
 import ru.chsergeig.bot.viselitsa.model.CastLotsRandomWordModel
 import ru.chsergeig.bot.viselitsa.model.SansTvRandomWordModel
 import java.io.BufferedReader
@@ -61,7 +62,12 @@ class RandomWordProvider {
                                     client.execute(request).entity.content)).readLine()
                     val mapper = XmlMapper()
                     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                    val model = mapper.readValue(line, SansTvRandomWordModel::class.java)
+                    val model: SansTvRandomWordModel
+                    try {
+                        model = mapper.readValue(line, SansTvRandomWordModel::class.java)
+                    } catch (e: Exception) {
+                        throw SansDeserializationException("Cant deserialize '$line'", e)
+                    }
 
                     result = model.words[0].value
                 }
