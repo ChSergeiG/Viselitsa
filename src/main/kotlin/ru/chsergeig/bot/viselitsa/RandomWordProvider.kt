@@ -57,9 +57,9 @@ class RandomWordProvider {
                 request.addHeader("accept-language", "en,en-US;q=0.9,ru-RU;q=0.8,ru;q=0.7")
                 var result = ""
                 httpClient.use { client ->
-                    val line = BufferedReader(
-                            InputStreamReader(
-                                    client.execute(request).entity.content)).readLine()
+                    val line = BufferedReader(InputStreamReader(client.execute(request).entity.content))
+                            .readLines()
+                            .joinToString(separator = " ")
                     val mapper = XmlMapper()
                     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                     val model: SansTvRandomWordModel
@@ -68,7 +68,6 @@ class RandomWordProvider {
                     } catch (e: Exception) {
                         throw SansDeserializationException("Cant deserialize '$line'", e)
                     }
-
                     result = model.words[0].value
                 }
                 return result
