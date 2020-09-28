@@ -25,10 +25,12 @@ class WaitListHolder {
 
         fun enable() {
             enabled.set(true)
+            flush()
         }
 
         fun setTimeToWait(timeToWait: Long) {
             this.timeToWait = timeToWait
+            flush()
         }
 
         fun getTimeToWait(): Long {
@@ -52,6 +54,10 @@ class WaitListHolder {
             }
             waitList.clear()
             poolExecutor.scheduleAtFixedRate(waitListChecker, 0, 100, TimeUnit.MILLISECONDS)
+        }
+
+        fun enabled(): Boolean {
+            return enabled.get()
         }
 
     }

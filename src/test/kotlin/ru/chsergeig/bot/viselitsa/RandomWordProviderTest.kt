@@ -1,14 +1,22 @@
 package ru.chsergeig.bot.viselitsa
 
-import io.github.artsok.RepeatedIfExceptionsTest
 import org.apache.commons.lang.StringUtils
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 
 internal class RandomWordProviderTest {
 
-    @RepeatedIfExceptionsTest(repeats = 2)
-    fun getWord() {
-        Assertions.assertTrue(StringUtils.isNotBlank(RandomWordProvider().getWord(RandomWordProviderHolder.provider)))
+    @ParameterizedTest
+    @EnumSource(RandomWordProvider.Provider::class)
+    fun providerGetWord(provider: RandomWordProvider.Provider) {
+        Assertions.assertTrue(StringUtils.isNotBlank(provider.getWord()))
+    }
+
+    @Test
+    fun defaultValue() {
+        Assertions.assertTrue(RandomWordProviderHolder.provider == RandomWordProvider.Provider.CASTLOTS)
     }
 
 }
