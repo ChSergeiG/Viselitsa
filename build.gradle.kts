@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "ru.chsergeig.bot.viselitsa"
-version = "1.0.16"
+version = "1.0.17"
 
 jacoco {
     toolVersion = "0.8.4"
@@ -26,8 +26,8 @@ coveralls {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation(group = "net.dv8tion", name = "JDA", version = "4.1.1_165")
-    implementation(group = "com.jagrosh", name = "jda-utilities", version = "3.0.3")
+    implementation(group = "net.dv8tion", name = "JDA", version = "4.2.0_204")
+    implementation(group = "com.jagrosh", name = "jda-utilities", version = "3.0.4")
     implementation(group = "com.mashape.unirest", name = "unirest-java", version = "1.4.9")
     implementation(group = "org.apache.httpcomponents", name = "httpclient", version = "4.1.1")
     implementation(group = "commons-lang", name = "commons-lang", version = "2.6")
