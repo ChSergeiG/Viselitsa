@@ -3,6 +3,7 @@ package ru.chsergeig.bot.viselitsa.commands
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 import net.dv8tion.jda.api.Permission
+import ru.chsergeig.bot.viselitsa.Game
 import kotlin.system.exitProcess
 
 class ShutDown : Command() {
@@ -15,7 +16,8 @@ class ShutDown : Command() {
     }
 
     override fun execute(event: CommandEvent?) {
-        event?.reactWarning()
+        Game.currentGame?.terminate()
+        event?.replyWarning("Ну да, ну да. Пошел я... куда-то")
         event?.jda?.shutdown()
         exitProcess(0)
     }
