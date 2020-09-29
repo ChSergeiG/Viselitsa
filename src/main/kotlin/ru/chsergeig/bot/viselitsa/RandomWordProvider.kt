@@ -14,7 +14,7 @@ import ru.chsergeig.bot.viselitsa.model.SansTvRandomWordModel
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class RandomWordProvider {
+open class RandomWordProvider {
 
     fun getWord(provider: Provider): String {
         return provider.getWord()

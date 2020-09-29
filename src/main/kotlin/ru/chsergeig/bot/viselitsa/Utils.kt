@@ -11,7 +11,7 @@ class Utils private constructor() {
         @JvmStatic
         fun checkSingleArgAndGet(event: CommandEvent, ifNotSingleArg: String?, ifEmptyArg: String?): String {
             val args = event.args
-            if(args.isNullOrEmpty()) {
+            if (args.isNullOrEmpty()) {
                 event.replyError(ifEmptyArg)
                 throw RuntimeException(ifEmptyArg)
             }
@@ -25,6 +25,35 @@ class Utils private constructor() {
                 throw RuntimeException(ifNotSingleArg)
             }
             return strings[0]
+        }
+
+        @JvmStatic
+        fun checkSingleOrDoubleArgAndGet(event: CommandEvent, ifMoreTwoArg: String?, ifEmptyArg: String?): Array<String> {
+            val args = event.args
+            if (args.isNullOrEmpty()) {
+                event.replyError(ifEmptyArg)
+                throw RuntimeException(ifEmptyArg)
+            }
+            val strings = args.trim().split("\\s+".toRegex()).stream()
+                    .map { it.trim() }
+                    .filter { it.isNotBlank() }
+                    .toArray<String> { l -> arrayOfNulls(l) }
+            when (strings.size) {
+                0 -> {
+                    event.replyError(ifEmptyArg)
+                    throw RuntimeException(ifEmptyArg)
+                }
+                1 -> {
+                    return arrayOf(strings[0], "")
+                }
+                2 -> {
+                    return arrayOf(strings[0], strings[1])
+                }
+                else -> {
+                    event.replyError(ifMoreTwoArg)
+                    throw RuntimeException(ifMoreTwoArg)
+                }
+            }
         }
 
         @JvmStatic

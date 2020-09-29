@@ -16,18 +16,20 @@ import ru.chsergeig.bot.viselitsa.commands.ShutDown
 import ru.chsergeig.bot.viselitsa.commands.StartGame
 import ru.chsergeig.bot.viselitsa.commands.SuggestChar
 import ru.chsergeig.bot.viselitsa.commands.WaitTime
+import ru.chsergeig.bot.viselitsa.resources.PropertyReader.COMMAND
+import ru.chsergeig.bot.viselitsa.resources.PropertyReader.MESSAGE
 import java.awt.Color
 
 fun main(args: Array<String>) {
-    val token: String = Utils.safeGetValueFromEvOrCli(args, "token=", "Token", "TOKEN")
-    val ownerId: String = Utils.safeGetValueFromEvOrCli(args, "ownerId=", "Owner ID", "OWNER_ID")
+    val token: String = Utils.safeGetValueFromEvOrCli(args, "token=", COMMAND.getByKey("def.token"), "TOKEN")
+    val ownerId: String = Utils.safeGetValueFromEvOrCli(args, "ownerId=", COMMAND.getByKey("def.oid"), "OWNER_ID")
     val client = CommandClientBuilder()
     if (token.isEmpty() || ownerId.isEmpty()) {
-        throw RuntimeException("Token and ownerId should pass via args or environment variables")
+        throw RuntimeException(MESSAGE.getByKey("init.emptyTokenOrOwnerId"))
     }
     WaitListHolder.flush()
     client.setStatus(OnlineStatus.ONLINE)
-    client.setActivity(Activity.listening("всякую дичь"))
+    client.setActivity(Activity.listening(MESSAGE.getByKey("bot.activity")))
     client.setOwnerId(ownerId)
     client.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26")
     client.setPrefix("!")
@@ -44,7 +46,7 @@ fun main(args: Array<String>) {
             SetRandomWordProvider(),
             AboutCommand(
                     Color.GREEN,
-                    "можете звать меня просто Виселичка",
+                    MESSAGE.getByKey("bot.desc"),
                     arrayOf("Теперь на котлине, ага. Репо: ${Utils.url}"),
                     Permission.ADMINISTRATOR)
     )

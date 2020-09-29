@@ -12,17 +12,18 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
+import ru.chsergeig.bot.viselitsa.resources.PropertyReader.MESSAGE
 
 @ExtendWith(MockitoExtension::class)
 internal class GameTest {
 
     @BeforeEach
-    fun disableWaitList () {
+    fun disableWaitList() {
         WaitListHolder.disable()
     }
 
     @AfterEach
-    fun enableWaitList () {
+    fun enableWaitList() {
         WaitListHolder.enable()
     }
 
@@ -147,7 +148,7 @@ internal class GameTest {
     fun terminateTest() {
         val game = Game("Слово")
         game.terminate()
-        Assertions.assertTrue(StringUtils.contains(game.getCurrentStatus(), "Оно было рождено, чтобы умереть"))
+        Assertions.assertTrue(StringUtils.contains(game.getCurrentStatus(), MESSAGE.getByKey("bot.game.terminateMessage")))
         Assertions.assertTrue(game.isFinished)
     }
 

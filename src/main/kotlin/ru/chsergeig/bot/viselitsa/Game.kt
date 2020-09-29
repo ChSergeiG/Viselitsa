@@ -2,6 +2,7 @@ package ru.chsergeig.bot.viselitsa
 
 import com.jagrosh.jdautilities.command.CommandEvent
 import ru.chsergeig.bot.viselitsa.model.StatisticsEntry
+import ru.chsergeig.bot.viselitsa.resources.PropertyReader.MESSAGE
 import java.util.LinkedList
 import java.util.Optional
 import java.util.stream.Collectors
@@ -42,7 +43,7 @@ ${finalStatus()}
     }
 
     fun terminate() {
-        status = "Оно было рождено, чтобы умереть"
+        status = MESSAGE.getByKey("bot.game.terminateMessage")
         isFinished = true
     }
 
@@ -66,7 +67,7 @@ ${finalStatus()}
                 checkFailed(event, refined)
             }
         } else {
-            event.reply("Эту букву уже называли (или это вовсе не буква). А нормальные буквы завезут?")
+            event.reply(MESSAGE.getByKey("bot.game.wrongSymbol"))
         }
     }
 

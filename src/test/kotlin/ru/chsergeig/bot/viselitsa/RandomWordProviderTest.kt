@@ -11,12 +11,21 @@ internal class RandomWordProviderTest {
     @ParameterizedTest
     @EnumSource(RandomWordProvider.Provider::class)
     fun providerGetWord(provider: RandomWordProvider.Provider) {
-        Assertions.assertTrue(StringUtils.isNotBlank(provider.getWord()))
+        Assertions.assertTrue(StringUtils.isNotBlank(
+                provider.getWord()
+        ))
     }
 
     @Test
-    fun defaultValue() {
+    fun defaultValue1() {
         Assertions.assertTrue(RandomWordProviderHolder.provider == RandomWordProvider.Provider.CASTLOTS)
+    }
+
+    @Test
+    fun defaultValue2() {
+        Assertions.assertTrue(StringUtils.isNotBlank(
+                RandomWordProvider().getWord(RandomWordProviderHolder.provider)
+        ))
     }
 
 }

@@ -114,6 +114,106 @@ internal class UtilsTest {
     }
 
     @Test
+    @DisplayName("Empty check-n-get")
+    fun checkSingleOrDoubleArgAndGet1(@Mock event: CommandEvent) {
+        Mockito.lenient().`when`(event.args).thenReturn(null)
+        Mockito.doNothing().`when`(event).replyError(isA(String::class.java))
+        try {
+            Utils.checkSingleOrDoubleArgAndGet(event, "TOO_MUCH", "EMPTY")
+        } catch (e: Exception) {
+            Assertions.assertTrue(StringUtils.equals(
+                    e.message,
+                    "EMPTY"
+            ))
+            Assertions.assertTrue(
+                    e.javaClass == java.lang.RuntimeException::class.java
+            )
+        }
+        Mockito.lenient().`when`(event.args).thenReturn("")
+        Mockito.doNothing().`when`(event).replyError(isA(String::class.java))
+        try {
+            Utils.checkSingleOrDoubleArgAndGet(event, "TOO_MUCH", "EMPTY")
+        } catch (e: Exception) {
+            Assertions.assertTrue(StringUtils.equals(
+                    e.message,
+                    "EMPTY"
+            ))
+            Assertions.assertTrue(
+                    e.javaClass == java.lang.RuntimeException::class.java
+            )
+        }
+        Mockito.lenient().`when`(event.args).thenReturn("                ")
+        Mockito.doNothing().`when`(event).replyError(isA(String::class.java))
+        try {
+            Utils.checkSingleOrDoubleArgAndGet(event, "TOO_MUCH", "EMPTY")
+        } catch (e: Exception) {
+            Assertions.assertTrue(StringUtils.equals(
+                    e.message,
+                    "EMPTY"
+            ))
+            Assertions.assertTrue(
+                    e.javaClass == java.lang.RuntimeException::class.java
+            )
+        }
+    }
+
+    @Test
+    @DisplayName("Valid check-n-get")
+    fun checkSingleOrDoubleArgAndGet2(@Mock event: CommandEvent) {
+        Mockito.lenient().`when`(event.args).thenReturn("VALUE")
+        Assertions.assertArrayEquals(
+                Utils.checkSingleOrDoubleArgAndGet(event, "TOO_MUCH", "EMPTY"),
+                arrayOf("VALUE", "")
+        )
+        Mockito.lenient().`when`(event.args).thenReturn("    VALUE    ")
+        Assertions.assertArrayEquals(
+                Utils.checkSingleOrDoubleArgAndGet(event, "TOO_MUCH", "EMPTY"),
+                arrayOf("VALUE", "")
+        )
+        Mockito.lenient().`when`(event.args).thenReturn("VALUE1 VALUE2")
+        Assertions.assertArrayEquals(
+                Utils.checkSingleOrDoubleArgAndGet(event, "TOO_MUCH", "EMPTY"),
+                arrayOf("VALUE1", "VALUE2")
+        )
+        Mockito.lenient().`when`(event.args).thenReturn("    VALUE1     VALUE2   ")
+        Assertions.assertArrayEquals(
+                Utils.checkSingleOrDoubleArgAndGet(event, "TOO_MUCH", "EMPTY"),
+                arrayOf("VALUE1", "VALUE2")
+        )
+    }
+
+    @Test
+    @DisplayName("Not valid check-n-get")
+    fun checkSingleOrDoubleArgAndGet3(@Mock event: CommandEvent) {
+        Mockito.lenient().`when`(event.args).thenReturn("VALUE1 VALUE2 VALUE3")
+        Mockito.doNothing().`when`(event).replyError(isA(String::class.java))
+        try {
+            Utils.checkSingleArgAndGet(event, "NOT_SINGLE", "EMPTY")
+        } catch (e: Exception) {
+            Assertions.assertTrue(StringUtils.equals(
+                    e.message,
+                    "NOT_SINGLE"
+            ))
+            Assertions.assertTrue(
+                    e.javaClass == java.lang.RuntimeException::class.java
+            )
+        }
+        Mockito.lenient().`when`(event.args).thenReturn("    VALUE1    VALUE2     VALUE3       ")
+        Mockito.doNothing().`when`(event).replyError(isA(String::class.java))
+        try {
+            Utils.checkSingleArgAndGet(event, "NOT_SINGLE", "EMPTY")
+        } catch (e: Exception) {
+            Assertions.assertTrue(StringUtils.equals(
+                    e.message,
+                    "NOT_SINGLE"
+            ))
+            Assertions.assertTrue(
+                    e.javaClass == java.lang.RuntimeException::class.java
+            )
+        }
+    }
+
+    @Test
     @Disabled
     @DisplayName("Environment value")
     fun safeGetValueFromCliTest1() {
