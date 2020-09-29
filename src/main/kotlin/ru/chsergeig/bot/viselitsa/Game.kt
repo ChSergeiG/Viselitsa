@@ -1,29 +1,36 @@
 package ru.chsergeig.bot.viselitsa
 
 import com.jagrosh.jdautilities.command.CommandEvent
+import net.dv8tion.jda.api.entities.EmbedType
+import net.dv8tion.jda.api.entities.MessageEmbed
 import ru.chsergeig.bot.viselitsa.model.StatisticsEntry
 import ru.chsergeig.bot.viselitsa.resources.PropertyReader.MESSAGE
+import java.time.OffsetDateTime
 import java.util.LinkedList
 import java.util.Optional
 import java.util.stream.Collectors
+import kotlin.collections.set
 
-class Game(word: String) {
+class Game(word: String, var leftTurns: Int) {
 
     companion object {
         var currentGame: Game? = null
     }
 
+    constructor(word: String) : this(word, -1)
+
     private val dictionary: MutableMap<String, Boolean> = LinkedHashMap()
     private val statistics: MutableList<StatisticsEntry> = ArrayList()
-    var leftTurns = -1
     private var status: String? = null
     var isFinished = false
     private var originWord: String?
     var word: String?
 
     init {
-        val limit = 15 - word.toCollection(HashSet()).size * 2 / 3
-        this.leftTurns = if (limit < 5) 5 else limit
+        if (leftTurns == -1) {
+            val limit = 15 - word.toCollection(HashSet()).size * 2 / 3
+            leftTurns = if (limit < 5) 5 else limit
+        }
         initChars()
         this.originWord = word
         this.word = Utils.purifyWord(word.toUpperCase(), dictionary)
@@ -157,15 +164,30 @@ ${getMaskedWord()}
 """
             )
         } else {
-            event.reply("""
+            status = """
 Нет такой буквы ($refined)
 Ходов не осталось. Спасибо, <@${event.author?.id}>, за просранную игру.
-Загадано слово: $word [$originWord].
+Загадано слово: $word [$originWord]. [Значение](http://gramota.ru/slovari/dic/?bts=x&word=${originWord})
 Стата:
 ${getSummary()}
 """
-            )
             isFinished = true
+            val messageEmbed = MessageEmbed(
+                    null,
+                    "Игра окончена",
+                    status,
+                    EmbedType.UNKNOWN,
+                    OffsetDateTime.now(),
+                    0xCB2710,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            )
+            event.reply(messageEmbed)
         }
     }
 
@@ -176,12 +198,27 @@ ${getSummary()}
         ) {
             isFinished = true
             status = """
-Слово отгадано целиком: $word [$originWord].
+Слово отгадано целиком: $word [$originWord]. [Значение](http://gramota.ru/slovari/dic/?bts=x&word=${originWord})
 Подибил <@${event.author?.id}>
 Стата:
 ${getSummary()}
 """
-            event.reply(status)
+            val messageEmbed = MessageEmbed(
+                    null,
+                    "Игра окончена",
+                    status,
+                    EmbedType.UNKNOWN,
+                    OffsetDateTime.now(),
+                    0x1BA270,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            )
+            event.reply(messageEmbed)
         } else {
             event.reply("""
 Есть такая буква ($refined)
@@ -198,18 +235,24 @@ ${getMaskedWord()}
                 .map { entry -> entry.id }
                 .distinct()
                 .map { id ->
-                    "<@$id> отгадал ${statistics.stream()
-                            .filter { entry -> entry.id == id && entry.status == StatisticsEntry.Status.SUCCESS }
-                            .count()} букв за ${statistics.stream()
-                            .filter { entry -> entry.id == id }
-                            .count()} попыток [${statistics.stream()
-                            .filter { entry -> entry.id == id && entry.status == StatisticsEntry.Status.SUCCESS }
-                            .map { entry -> entry.refined }
-                            .collect(Collectors.joining(""))
-                    }/${statistics.stream()
-                            .filter { entry -> entry.id == id && entry.status == StatisticsEntry.Status.FAIL }
-                            .map { entry -> entry.refined }
-                            .collect(Collectors.joining(""))
+                    "<@$id> отгадал ${
+                        statistics.stream()
+                                .filter { entry -> entry.id == id && entry.status == StatisticsEntry.Status.SUCCESS }
+                                .count()
+                    } букв за ${
+                        statistics.stream()
+                                .filter { entry -> entry.id == id }
+                                .count()
+                    } попыток [${
+                        statistics.stream()
+                                .filter { entry -> entry.id == id && entry.status == StatisticsEntry.Status.SUCCESS }
+                                .map { entry -> entry.refined }
+                                .collect(Collectors.joining(""))
+                    }/${
+                        statistics.stream()
+                                .filter { entry -> entry.id == id && entry.status == StatisticsEntry.Status.FAIL }
+                                .map { entry -> entry.refined }
+                                .collect(Collectors.joining(""))
                     }]"
                 }.collect(Collectors.joining("\n"))
     }

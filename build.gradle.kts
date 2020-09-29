@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "ru.chsergeig.bot.viselitsa"
-version = "1.0.18"
+version = "1.0.20"
 
 jacoco {
     toolVersion = "0.8.4"

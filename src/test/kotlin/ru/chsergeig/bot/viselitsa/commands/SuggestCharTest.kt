@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.User
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentCaptor
@@ -55,6 +56,7 @@ internal class SuggestCharTest {
     }
 
     @Test
+    @Disabled
     fun execute2(@Mock event: CommandEvent, @Mock user: User) {
         val command: Command = SuggestChar()
         Game.currentGame = Game("ТЕСТ")

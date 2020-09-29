@@ -188,11 +188,11 @@ internal class UtilsTest {
         Mockito.lenient().`when`(event.args).thenReturn("VALUE1 VALUE2 VALUE3")
         Mockito.doNothing().`when`(event).replyError(isA(String::class.java))
         try {
-            Utils.checkSingleArgAndGet(event, "NOT_SINGLE", "EMPTY")
+            Utils.checkSingleOrDoubleArgAndGet(event, "TOO_MUCH", "EMPTY")
         } catch (e: Exception) {
             Assertions.assertTrue(StringUtils.equals(
                     e.message,
-                    "NOT_SINGLE"
+                    "TOO_MUCH"
             ))
             Assertions.assertTrue(
                     e.javaClass == java.lang.RuntimeException::class.java
@@ -201,11 +201,11 @@ internal class UtilsTest {
         Mockito.lenient().`when`(event.args).thenReturn("    VALUE1    VALUE2     VALUE3       ")
         Mockito.doNothing().`when`(event).replyError(isA(String::class.java))
         try {
-            Utils.checkSingleArgAndGet(event, "NOT_SINGLE", "EMPTY")
+            Utils.checkSingleOrDoubleArgAndGet(event, "TOO_MUCH", "EMPTY")
         } catch (e: Exception) {
             Assertions.assertTrue(StringUtils.equals(
                     e.message,
-                    "NOT_SINGLE"
+                    "TOO_MUCH"
             ))
             Assertions.assertTrue(
                     e.javaClass == java.lang.RuntimeException::class.java
