@@ -1,6 +1,6 @@
 package ru.chsergeig.bot.viselitsa
 
-class RandomWordProviderHolder {
+class RandomWordProviderHolder private constructor() {
 
     companion object {
         var provider = RandomWordProvider.Provider.CASTLOTS

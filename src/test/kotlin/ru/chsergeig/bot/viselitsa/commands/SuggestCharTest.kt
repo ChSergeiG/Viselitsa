@@ -56,7 +56,6 @@ internal class SuggestCharTest {
     }
 
     @Test
-    @Disabled
     fun execute2(@Mock event: CommandEvent, @Mock user: User) {
         val command: Command = SuggestChar()
         Game.currentGame = Game("ТЕСТ")

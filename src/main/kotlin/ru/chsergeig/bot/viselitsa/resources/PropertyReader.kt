@@ -3,9 +3,9 @@ package ru.chsergeig.bot.viselitsa.resources
 import java.io.Reader
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
+import java.util.Properties
 
-enum class PropertyReader(private val file: String) {
+enum class PropertyReader(file: String) {
     COMMAND("command.properties") {
         override fun getByKey(key: String): String {
             return getProps().getProperty(key)

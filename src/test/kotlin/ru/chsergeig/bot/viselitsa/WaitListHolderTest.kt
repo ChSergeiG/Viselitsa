@@ -37,7 +37,7 @@ internal class WaitListHolderTest {
     }
 
     @Test
-    fun checkFlushCorrectly() {
+    fun checkFlushCorrectly1() {
         WaitListHolder.setTimeToWait(1_000_000_000L)
         WaitListHolder.add("id1")
         WaitListHolder.add("id2")
@@ -49,7 +49,11 @@ internal class WaitListHolderTest {
         Assertions.assertFalse(WaitListHolder.checkWaits("id1"))
         Assertions.assertFalse(WaitListHolder.checkWaits("id2"))
         Assertions.assertFalse(WaitListHolder.checkWaits("id3"))
+    }
 
+    @Test
+    fun checkFlushCorrectly2() {
+        WaitListHolder.setTimeToWait(1_000_000_000L)
         WaitListHolder.add("id1")
         WaitListHolder.add("id2")
         WaitListHolder.add("id3")
@@ -64,14 +68,6 @@ internal class WaitListHolderTest {
         Assertions.assertFalse(WaitListHolder.checkWaits("id1"))
         Assertions.assertFalse(WaitListHolder.checkWaits("id2"))
         Assertions.assertFalse(WaitListHolder.checkWaits("id3"))
-        WaitListHolder.add("id1")
-        WaitListHolder.add("id2")
-        WaitListHolder.add("id3")
-        Assertions.assertTrue(WaitListHolder.checkWaits("id1"))
-        Assertions.assertTrue(WaitListHolder.checkWaits("id2"))
-        Assertions.assertTrue(WaitListHolder.checkWaits("id3"))
-
     }
-
 
 }

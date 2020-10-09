@@ -6,17 +6,33 @@ import org.apache.commons.lang.StringUtils
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
 import ru.chsergeig.bot.viselitsa.resources.PropertyReader.MESSAGE
+import java.util.stream.Stream
 
 @ExtendWith(MockitoExtension::class)
 internal class GameTest {
+
+    companion object {
+        @JvmStatic
+        private fun gameLeftTurns(): Stream<Arguments> = Stream.of(
+                Arguments.of("", 15),
+                Arguments.of("АБ", 14),
+                Arguments.of("АБВ", 13),
+                Arguments.of("АБВВВВ", 13),
+                Arguments.of("АБВГДЕ", 11),
+                Arguments.of("АБВГДЕЖЗИЙКЛМНОПР", 5),
+                Arguments.of("АБВГДЕЖЗИЙКЛМНОПРСТУФХ", 5)
+        )
+    }
 
     @BeforeEach
     fun disableWaitList() {
@@ -98,16 +114,11 @@ internal class GameTest {
         Assertions.assertTrue(game.isFinished)
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("Check leftTurns initialized correctly")
-    fun leftTurnsTest1() {
-        Assertions.assertEquals(15, Game("").leftTurns)
-        Assertions.assertEquals(14, Game("АБ").leftTurns)
-        Assertions.assertEquals(13, Game("АБВ").leftTurns)
-        Assertions.assertEquals(13, Game("АБВВВВ").leftTurns)
-        Assertions.assertEquals(11, Game("АБВГДЕ").leftTurns)
-        Assertions.assertEquals(5, Game("АБВГДЕЖЗИЙКЛМНОПР").leftTurns)
-        Assertions.assertEquals(5, Game("АБВГДЕЖЗИЙКЛМНОПРСТУФХ").leftTurns)
+    @MethodSource("gameLeftTurns")
+    fun leftTurnsTest1(word: String, turns: Int) {
+        Assertions.assertEquals(turns, Game(word).leftTurns)
     }
 
     @Test
